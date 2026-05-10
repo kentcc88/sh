@@ -5313,7 +5313,7 @@ dd_xitong() {
 			echo -e "${gl_hong}注意:${gl_bai}重裝有風險失聯，不放心者慎用。重裝預計花費15分鐘，請提前備份資料。"
 			echo -e "${gl_hui}感謝bin456789大佬和leitbogioro大佬的腳本支持！${gl_bai} "
 			echo -e "${gl_hui}bin456789項目地址:${gh_https_url}github.com/bin456789/reinstall${gl_bai}"
-			echo -e "${gl_hui}leitbogioro專案地址:${gh_https_url}github.com/leitbogioro/Tools${gl_bai}"
+			echo -e "${gl_hui}leitbogioro项目地址: ${gh_https_url}github.com/leitbogioro/Tools${gl_bai}"
 			echo "------------------------"
 			echo "1. Debian 13                  2. Debian 12"
 			echo "3. Debian 11                  4. Debian 10"
@@ -7639,7 +7639,7 @@ linux_tools() {
 		exit 1
 	  fi
 
-	  echo "📦 使用包管理器: $PM"
+	  echo "📦 使用套件管理器:$PM"
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
 
 	  for ((i=0; i<${#tools[@]}; i+=2)); do
@@ -7672,7 +7672,7 @@ linux_tools() {
 	  echo -e "${gl_kjlan}------------------------"
 	  echo -e "${gl_kjlan}11.  ${gl_bai}btop 現代化監控工具${gl_huang}★${gl_bai}             ${gl_kjlan}12.  ${gl_bai}ranger 檔案管理工具"
 	  echo -e "${gl_kjlan}13.  ${gl_bai}ncdu 磁碟佔用檢視工具${gl_kjlan}14.  ${gl_bai}fzf 全域搜尋工具"
-	  echo -e "${gl_kjlan}15.  ${gl_bai}vim 文字編輯器${gl_kjlan}16.  ${gl_bai}nano 文字編輯器${gl_huang}★${gl_bai}"
+	  echo -e "${gl_kjlan}15.  ${gl_bai}vim 文字編輯器${gl_kjlan}16.  ${gl_bai}nano 文本编辑器 ${gl_huang}★${gl_bai}"
 	  echo -e "${gl_kjlan}17.  ${gl_bai}git 版本控制系統${gl_kjlan}18.  ${gl_bai}opencode AI程式設計助手${gl_huang}★${gl_bai}"
 	  echo -e "${gl_kjlan}------------------------"
 	  echo -e "${gl_kjlan}21.  ${gl_bai}駭客任務螢幕保${gl_kjlan}22.  ${gl_bai}跑火車屏保"
@@ -8128,7 +8128,7 @@ docker_ssh_migration() {
 				project_name=$(basename "$f" | sed 's/backup_type_//')
 				path_file="$BACKUP_DIR/compose_path_${project_name}.txt"
 				[[ -f "$path_file" ]] && original_path=$(cat "$path_file") || original_path=""
-				[[ -z "$original_path" ]] && read -e -p  "未找到原始路径，请输入还原目录路径: " original_path
+				[[ -z "$original_path" ]] && read -e -p  "未找到原始路徑，請輸入還原目錄路徑:" original_path
 
 				# 檢查該 compose 項目的容器是否已在運作
 				running_count=$(docker ps --filter "label=com.docker.compose.project=$project_name" --format '{{.Names}}' | wc -l)
@@ -8623,7 +8623,7 @@ linux_test() {
 	  echo -e "${gl_kjlan}綜合性測試"
 	  echo -e "${gl_kjlan}31.  ${gl_bai}bench 效能測試"
 	  echo -e "${gl_kjlan}32.  ${gl_bai}spiritysdx 融合怪測評${gl_huang}★${gl_bai}"
-	  echo -e "${gl_kjlan}33.  ${gl_bai}nodequality 融合怪測評${gl_huang}★${gl_bai}"
+	  echo -e "${gl_kjlan}33.  ${gl_bai}nodequality 融合怪测评 ${gl_huang}★${gl_bai}"
 	  echo -e "${gl_kjlan}------------------------"
 	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主選單"
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
@@ -8685,11 +8685,11 @@ linux_test() {
 			  echo "北京移動: 221.179.155.161"
 			  echo "上海電信: 202.96.209.133"
 			  echo "上海聯通: 210.22.97.1"
-			  echo "上海移動: 211.136.112.200"
-			  echo "廣州電信: 58.60.188.222"
+			  echo "上海移动: 211.136.112.200"
+			  echo "广州电信: 58.60.188.222"
 			  echo "廣州聯通: 210.21.196.6"
 			  echo "廣州移動: 120.196.165.24"
-			  echo "成都電信: 61.139.2.69"
+			  echo "成都电信: 61.139.2.69"
 			  echo "成都聯通: 119.6.6.6"
 			  echo "成都移動: 211.137.96.205"
 			  echo "湖南電信: 36.111.200.100"
@@ -9189,7 +9189,7 @@ linux_ldnmp() {
 	  echo "使用者名稱: admin"
 	  echo "密碼: admin"
 	  echo "------------------------"
-	  echo "登入時右上角如果出現紅色error0請使用下列指令:"
+	  echo "登录时右上角如果出现红色error0请使用如下命令: "
 	  echo "我也很氣憤獨角數卡為啥這麼麻煩，會有這樣的問題！"
 	  echo "sed -i 's/ADMIN_HTTPS=false/ADMIN_HTTPS=true/g' /home/web/html/$yuming/dujiaoka/.env"
 
@@ -9197,7 +9197,7 @@ linux_ldnmp() {
 
 	  7)
 	  clear
-	  # flarum論壇
+	  # flarum论坛
 	  webname="flarum論壇"
 	  send_stats "安裝$webname"
 	  echo "開始部署$webname"
@@ -9252,7 +9252,7 @@ linux_ldnmp() {
 	  echo "使用者名稱:$dbuse"
 	  echo "密碼:$dbusepasswd"
 	  echo "表前缀: flarum_"
-	  echo "管理員資訊自行設定"
+	  echo "管理员信息自行设置"
 
 		;;
 
@@ -10776,7 +10776,7 @@ EOF
 			openclaw_sync_sessions_model "$provider_name/$default_model"
 			start_gateway
 			echo "$finish_msg"
-			echo "✅ 当前 API 协议类型: $DETECTED_API"
+			echo "✅ 當前 API 協定類型:$DETECTED_API"
 		fi
 
 		break_end
@@ -11063,7 +11063,7 @@ for mid in added_ids:
     new_models.append(nm)
 
 if not new_models:
-    print(f'❌ {target}: 同步后无可用模型，已中止写入')
+    print(f'❌ {target}: 同步後無可用模型，已中止寫入')
     raise SystemExit(5)
 
 expected_refs = {model_ref(target, str(m['id'])) for m in new_models if isinstance(m, dict) and m.get('id')}
@@ -11149,7 +11149,7 @@ PY2
 
 openclaw_detect_api_protocol_by_provider() {
 	# 協定探測邏輯已移除：腳本不再自動偵測/判定 API 類型。
-	# 保留函数以兼容菜单调用，但不做任何改写。
+	# 保留函數以相容選單調用，但不做任何改寫。
 	echo "ℹ️ 已關閉協議探測：請手動在${HOME}/.openclaw/openclaw.json 中設定 provider.api 為 openai-completions 或 openai-responses"
 	return 0
 }
@@ -11423,7 +11423,7 @@ PY
 		echo -e "  ${gl_huang}● PackyAPI${gl_bai} ${gl_zi}[AFF]${gl_bai}"
 		echo -e "    ${gl_kjlan}https://www.packyapi.com/register?aff=wHri${gl_bai}"
 		echo ""
-		echo -e "  ${gl_huang}● 雲霧 API${gl_bai} ${gl_zi}[AFF]${gl_bai}"
+		echo -e "  ${gl_huang}● 云雾 API${gl_bai} ${gl_zi}[AFF]${gl_bai}"
 		echo -e "    ${gl_kjlan}https://yunwu.ai/register?aff=ZuyK${gl_bai}"
 		echo ""
 		echo -e "  ${gl_huang}●柏拉圖AI${gl_bai} ${gl_zi}[AFF]${gl_bai}"
@@ -11798,7 +11798,7 @@ PYTHON_EOF
 				return 0
 			else
 				if ! command -v gum >/dev/null 2>&1 || ! gum --version >/dev/null 2>&1; then
-					echo "gum 不可用，返回旧版输入模式。"
+					echo "gum 不可用，傳回舊版輸入模式。"
 					sleep 1
 					continue
 				fi
@@ -12117,7 +12117,7 @@ PYTHON_EOF
 			echo "- [nostr] # 加密隱私聊天"
 			echo "--------------------------------------------------------"
 
-			echo "1) 安裝/啟用插件"
+			echo "1) 安装/启用插件"
 			echo "2) 刪除/停用插件"
 			echo "0) 返回"
 			read -e -p "請選擇操作：" plugin_action
@@ -12305,7 +12305,7 @@ PYTHON_EOF
 						failed_list="$failed_list $skill_name"
 					fi
 				else
-					echo "🗑️ 正在刪除技能:$skill_name"
+					echo "🗑️ 正在删除技能: $skill_name"
 					npx clawhub uninstall "$skill_name" --yes --no-input 2>/dev/null || npx clawhub uninstall "$skill_name" >/dev/null 2>&1
 					if [ -d "${HOME}/.openclaw/workspace/skills/${skill_name}" ]; then
 						rm -rf "${HOME}/.openclaw/workspace/skills/${skill_name}"
@@ -12897,7 +12897,7 @@ if os.path.isdir(agents_root):
 
 		echo "⚠️ 高風險操作：專案還原會涵蓋 OpenClaw 設定與工作區內容。"
 		echo "⚠️ 還原前將執行 manifest/sha256 校驗、白名單恢復、gateway 停啟與健康檢查。"
-		read -e -p "請輸入確認詞【我已知高風險並繼續還原】後繼續:" confirm_text
+		read -e -p "请输入确认词【我已知晓高风险并继续还原】后继续: " confirm_text
 		if [ "$confirm_text" != "我已知高風險並持續還原" ]; then
 			echo "❌ 確認詞不匹配，已取消還原"
 			break_end
@@ -13117,7 +13117,7 @@ if os.path.isdir(agents_root):
 		fi
 
 		if rm -f -- "$target_path"; then
-			echo "✅ 删除成功: $target_file"
+			echo "✅ 刪除成功:$target_file"
 		else
 			echo "❌ 刪除失敗:$target_file"
 		fi
@@ -13597,10 +13597,10 @@ PY
 			export PATH="$HOME/.bun/bin:$PATH"
 		fi
 		if command -v bun >/dev/null 2>&1; then
-			echo "✅ bun 安装完成"
+			echo "✅ bun 安裝完成"
 			return 0
 		fi
-		echo "❌ bun 安装失败"
+		echo "❌ bun 安裝失敗"
 		return 1
 	}
 
@@ -13645,7 +13645,7 @@ PY
 			echo "索引: 已跳過"
 		fi
 		if [ "$OPENCLAW_MEMORY_RESTARTED" = "true" ]; then
-			echo "重啟: 已執行"
+			echo "重启: 已执行"
 		else
 			echo "重啟: 已跳過"
 		fi
@@ -13661,7 +13661,7 @@ PY
 		if [ -n "$OPENCLAW_MEMORY_HF_BASE" ]; then
 			echo "下載來源:$OPENCLAW_MEMORY_HF_BASE"
 		fi
-		echo "最終狀態:"
+		echo "最终状态:"
 		openclaw_memory_render_status
 		echo "---------------------------------------"
 	}
@@ -13672,9 +13672,9 @@ PY
 		OPENCLAW_MEMORY_RESTARTED="false"
 		OPENCLAW_MEMORY_CONFIG_ONLY="false"
 		echo "即將執行自動部署（詳細模式）"
-		echo "目標方案:$scheme_label"
-		echo "地區: ${OPENCLAW_MEMORY_COUNTRY:-unknown}"
-		echo "鏡像來源探測: huggingface.co=${OPENCLAW_MEMORY_HF_OK:-unknown} hf-mirror.com=${OPENCLAW_MEMORY_MIRROR_OK:-unknown}"
+		echo "目标方案: $scheme_label"
+		echo "地区: ${OPENCLAW_MEMORY_COUNTRY:-unknown}"
+		echo "镜像源探测: huggingface.co=${OPENCLAW_MEMORY_HF_OK:-unknown} hf-mirror.com=${OPENCLAW_MEMORY_MIRROR_OK:-unknown}"
 		echo "下载源: ${OPENCLAW_MEMORY_HF_BASE:-unknown}"
 		if [ -n "$OPENCLAW_MEMORY_EXPECT_PATH" ]; then
 			echo "預計下載路徑:$OPENCLAW_MEMORY_EXPECT_PATH"
@@ -13682,7 +13682,7 @@ PY
 		if [ -n "$OPENCLAW_MEMORY_EXPECT_SIZE" ]; then
 			echo "可能流量/磁碟佔用:$OPENCLAW_MEMORY_EXPECT_SIZE"
 		else
-			echo "可能流量/磁碟佔用: 視實際情況而定"
+			echo "可能流量/磁盘占用: 视实际情况而定"
 		fi
 		echo "確認後將自動安裝/下載、寫入設定、建置索引並重新啟動網關"
 		echo "進階選項: 輸入 config 僅寫入設定（不安裝不下載、不索引、不重新啟動）"
@@ -13735,7 +13735,7 @@ PY
 			openclaw_memory_config_set "memory.qmd.command" "$OPENCLAW_MEMORY_QMD_PATH"
 			echo "✅ 已寫入 memory.qmd.command:$OPENCLAW_MEMORY_QMD_PATH"
 		else
-			echo "✅ memory.qmd.command 已正確"
+			echo "✅ memory.qmd.command 已正确"
 		fi
 		if [ "$OPENCLAW_MEMORY_PREHEAT" = "true" ]; then
 			echo "🔥 預熱索引（可能下載模型）"
@@ -13964,7 +13964,7 @@ EOF
 		if [ "$include_dm" = "false" ]; then
 			echo "⚠️ 偵測到 includeDefaultMemory=false"
 			echo "這會導致預設記憶檔案（MEMORY.md + memory/*.md）不被索引"
-			echo "所以 Indexed 會一直顯示 0/N"
+			echo "   所以 Indexed 会一直显示 0/N"
 			echo ""
 			read -e -p "是否恢復為 true 並重建索引？ (Y/n):" fix_choice
 			if [[ ! "$fix_choice" =~ ^[Nn]$ ]]; then
@@ -14140,7 +14140,7 @@ EOF
 			echo "======================================="
 			openclaw_memory_file_render_list
 			echo "---------------------------------------"
-			read -e -p "请输入文件编号查看（0 返回）: " file_choice
+			read -e -p "請輸入文件編號查看（0 返回）:" file_choice
 			if [ "$file_choice" = "0" ]; then
 				return 0
 			fi
@@ -14194,7 +14194,7 @@ EOF
 			echo "3. 索引修復（Indexed 異常）"
 			echo "4. 記憶方案（QMD/Local/Auto）"
 			echo "5. 搜尋測試（驗證索引是否運作）"
-			echo "6. 深度狀態探測（檢查嵌入模型）"
+			echo "6. 深度状态探测（检查嵌入模型）"
 			echo "0. 返回上一級"
 			echo "---------------------------------------"
 			read -e -p "請輸入你的選擇:" memory_choice
@@ -14509,7 +14509,7 @@ print(json.dumps(data, indent=2))
 		echo "---------------------------------------"
 		echo -e "${gl_huang}[應用層 Tool Policy 狀態]${gl_bai}"
 		echo "Profile (預設): ${current_profile:-(unset)}"
-		echo "  Exec 限制: ${current_sec:-(unset)}"
+		echo "Exec 限制: ${current_sec:-(unset)}"
 		echo "審核提示: ${current_ask:-(unset)}"
 		echo "提權開關: ${current_elevated:-(unset)}"
 
@@ -15000,7 +15000,7 @@ for idx,item in enumerate(agents,1):
 		read -e -p "請輸入 workspace 路徑（預設為 ~/.openclaw/workspace-${agent_id}）: " workspace
 		[ -z "$workspace" ] && workspace="~/.openclaw/workspace-${agent_id}"
 		echo "將創建智能體:$agent_id"
-		echo "工作目錄:$workspace"
+		echo "工作目录: $workspace"
 		read -e -p "輸入 yes 確認繼續:" confirm
 		[ "$confirm" = "yes" ] || { echo "已取消"; return 1; }
 		if openclaw agents add "$agent_id" --workspace "$workspace"; then
@@ -15159,7 +15159,7 @@ print("✅ 多智能體健康檢查完成")
 		[ -z "$agent_id" ] && { echo "ID 不能為空"; return 1; }
 		echo "修改選項（留空跳過）："
 		read -e -p "新名稱:" new_name
-		read -e -p "新 Emoji:" new_emoji
+		read -e -p "  新 Emoji: " new_emoji
 		local cmd="openclaw agents set-identity --agent $agent_id"
 		[ -n "$new_name" ] && cmd="$cmd --name $new_name"
 		[ -n "$new_emoji" ] && cmd="$cmd --emoji $new_emoji"
@@ -15184,7 +15184,7 @@ print("✅ 多智能體健康檢查完成")
 		while true; do
 			clear
 			echo "======================================="
-			echo "OpenClaw 多智能體管理"
+			echo "OpenClaw 多智能体管理"
 			echo "======================================="
 			openclaw_multiagent_render_status
 			echo "---------------------------------------"
@@ -15195,7 +15195,7 @@ print("✅ 多智能體健康檢查完成")
 			echo "5. 移除路由綁定"
 			echo "6. 查看會話概況"
 			echo "7. 執行多智能體健康檢查"
-			echo "8. 修改智能體身分（名稱/Emoji）"
+			echo "8. 修改智能体身份（名称/Emoji）"
 			echo "9. 清理過期會話"
 			echo "0. 返回上一級"
 			echo "---------------------------------------"
@@ -21733,7 +21733,7 @@ while true; do
 			if [ -n "$cron_sed_cmd" ]; then
 				SH_Update_task="$SH_Update_task && $cron_sed_cmd"
 			fi
-			# 從舊腳本恢復 permission_granted 和 ENABLE_STATS 設置
+			# 从旧脚本恢复 permission_granted 和 ENABLE_STATS 设置
 			SH_Update_task="$SH_Update_task && grep -q 'permission_granted=\"true\"' ~/kejilion.sh.bak 2>/dev/null && sed -i 's/permission_granted=\"false\"/permission_granted=\"true\"/' ~/kejilion.sh; grep -q 'ENABLE_STATS=\"false\"' ~/kejilion.sh.bak 2>/dev/null && sed -i 's/ENABLE_STATS=\"true\"/ENABLE_STATS=\"false\"/' ~/kejilion.sh"
 			# 部署到 /usr/local/bin/k 和 /usr/bin/k
 			SH_Update_task="$SH_Update_task; cp -f ~/kejilion.sh /usr/local/bin/k 2>/dev/null; ln -sf /usr/local/bin/k /usr/bin/k 2>/dev/null"
