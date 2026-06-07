@@ -890,7 +890,7 @@ close_port() {
 		iptables -D INPUT -p tcp --dport $port -j ACCEPT 2>/dev/null
 		iptables -D INPUT -p udp --dport $port -j ACCEPT 2>/dev/null
 
-		# Add a shutdown rule
+		# Add shutdown rule
 		if ! iptables -C INPUT -p tcp --dport $port -j DROP 2>/dev/null; then
 			iptables -I INPUT 1 -p tcp --dport $port -j DROP
 		fi
@@ -2324,7 +2324,7 @@ check_nginx_compression() {
 
 	# Check whether zstd is on and uncommented (the whole line starts with zstd on;)
 	if grep -qE '^\s*zstd\s+on;' "$CONFIG_FILE"; then
-		zstd_status="zstd compression is enabled"
+		zstd_status="zstd compression is on"
 	else
 		zstd_status=""
 	fi
@@ -3221,7 +3221,7 @@ f2b_sshd() {
 
 # Basic parameter configuration: ban duration (bantime), time window (findtime), number of retries (maxretry)
 # illustrate:
-# - Prioritize writing to /etc/fail2ban/jail.d/sshd.local (overwrites the default jail configuration and is not easy to lose when upgrading)
+# - Prioritize writing to /etc/fail2ban/jail.d/sshd.local (overrides the default jail configuration and is not easy to lose when upgrading)
 # - If it is Alpine and the jail names are different, still write sshd.local; Fail2Ban will match according to the jail name.
 f2b_basic_config() {
 	root_use
@@ -5250,7 +5250,7 @@ add_sshpasswd() {
 
 root_use() {
 clear
-[ "$EUID" -ne 0 ] && echo -e "${gl_huang}hint:${gl_bai}This feature requires root user to run!" && break_end && kejilion
+[ "$EUID" -ne 0 ] && echo -e "${gl_huang}hint:${gl_bai}This function requires root user to run!" && break_end && kejilion
 }
 
 
@@ -6012,7 +6012,7 @@ _kernel_optimize_core() {
 			KEEPALIVE_PROBES=5
 			;;
 		balanced)
-			# 均衡模式：适度优化
+			# Balanced Mode: Moderate Optimization
 			SWAPPINESS=30
 			DIRTY_RATIO=20
 			DIRTY_BG_RATIO=10
@@ -6044,7 +6044,7 @@ _kernel_optimize_core() {
 		MIN_FREE_KB=65536
 	elif [ "$MEM_MB" -ge 1024 ]; then
 		MIN_FREE_KB=32768
-		# 小内存缩小缓冲区
+		# Small memory shrink buffer
 		if [ "$scene" != "balanced" ]; then
 			RMEM_MAX=16777216
 			WMEM_MAX=16777216
@@ -6073,7 +6073,7 @@ net.ipv4.udp_wmem_min = 16384
 net.ipv4.tcp_notsent_lowat = 16384"
 	fi
 
-	# ── 游戏服场景额外：低延迟优先 ──
+	# ── Game server scene extra: low latency priority ──
 	local GAME_EXTRA=""
 	if [ "$scene" = "game" ]; then
 		GAME_EXTRA="
@@ -6600,9 +6600,9 @@ send_stats "Command Favorites"
 bash <(curl -l -s ${gh_proxy}raw.githubusercontent.com/byJoey/cmdbox/refs/heads/main/install.sh)
 }
 
-# Create a backup
+# Create backup
 create_backup() {
-	send_stats "Create a backup"
+	send_stats "Create backup"
 	local TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 
 	# Prompt user for backup directory
@@ -6644,7 +6644,7 @@ create_backup() {
 		echo "- $path"
 	done
 
-	# Create a backup
+	# Create backup
 	echo "Creating backup$BACKUP_NAME..."
 	install tar
 	tar -czvf "$BACKUP_DIR/$BACKUP_NAME" "${BACKUP_PATHS[@]}"
@@ -8083,7 +8083,7 @@ docker_ssh_migration() {
 				local VOL_ARGS=""
 				for path in $VOL_PATHS; do VOL_ARGS+="-v $path:$path "; done
 
-				# Mirror
+				# mirror
 				local IMAGE
 				IMAGE=$(jq -r '.[0].Config.Image' "$inspect_file")
 
@@ -10051,7 +10051,7 @@ moltbot_menu() {
 		echo "--------------------"
 		echo "4. View status log"
 		echo "5. Change model"
-		echo "6. API management"
+		echo "6. API Management"
 		echo "7. Robot connection and docking"
 		echo "8. Plug-in management (installation/removal)"
 		echo "9. Skill management (installation/removal)"
@@ -14645,7 +14645,7 @@ except Exception:
 		echo "======================================="
 		openclaw security audit
 		echo "---------------------------------------"
-		read -e -p "Do you want to automatically remediate discovered security vulnerabilities? (y/n):" fix_choice
+		read -e -p "Attempt to automatically remediate discovered security vulnerabilities? (y/n):" fix_choice
 		if [[ "$fix_choice" == "y" || "$fix_choice" == "Y" || "$fix_choice" == "yes" ]]; then
 			openclaw security audit --fix
 			echo -e "${gl_lv}✅ Automatic repair completed.${gl_bai}"
@@ -15572,7 +15572,7 @@ while true; do
 	  echo -e "${gl_kjlan}109. ${color109}ZFile online network disk${gl_kjlan}110. ${color110}Karakeep bookmark management"
 	  echo -e "${gl_kjlan}-------------------------"
 	  echo -e "${gl_kjlan}111. ${color111}Multi-format file conversion tool${gl_kjlan}112. ${color112}Lucky large intranet penetration tool"
-	  echo -e "${gl_kjlan}113. ${color113}Firefox browser${gl_kjlan}114. ${color114}OpenClaw机器人管理工具${gl_huang}★${gl_bai}"
+	  echo -e "${gl_kjlan}113. ${color113}Firefox browser${gl_kjlan}114. ${color114}OpenClaw bot management tool${gl_huang}★${gl_bai}"
 	  echo -e "${gl_kjlan}115. ${color115}Hermes robot management tool${gl_huang}★${gl_bai}"
 	  echo -e "${gl_kjlan}-------------------------"
 	  echo -e "${gl_kjlan}Third-party application list"
@@ -15878,7 +15878,7 @@ while true; do
 			check_docker_image_update $docker_name
 
 			clear
-			echo -e "postal services$check_docker $update_status"
+			echo -e "postal service$check_docker $update_status"
 			echo "poste.io is an open source mail server solution,"
 			echo "Video introduction: https://www.bilibili.com/video/BV1wv421C71t?t=0.1"
 
@@ -17617,7 +17617,7 @@ while true; do
 
 		}
 
-		local docker_describe="Is a lightweight, high-performance music streaming server"
+		local docker_describe="It is a lightweight, high-performance music streaming server"
 		local docker_url="Official website introduction: https://www.navidrome.org/"
 		local docker_use=""
 		local docker_passwd=""
@@ -19358,7 +19358,7 @@ linux_work() {
 	  echo -e "${gl_kjlan}2.   ${gl_bai}Work Area 2"
 	  echo -e "${gl_kjlan}3.   ${gl_bai}Work Area 3"
 	  echo -e "${gl_kjlan}4.   ${gl_bai}Work Area 4"
-	  echo -e "${gl_kjlan}5.   ${gl_bai}Workspace No. 5"
+	  echo -e "${gl_kjlan}5.   ${gl_bai}Work Area 5"
 	  echo -e "${gl_kjlan}6.   ${gl_bai}Work Area 6"
 	  echo -e "${gl_kjlan}7.   ${gl_bai}Work Area 7"
 	  echo -e "${gl_kjlan}8.   ${gl_bai}Work Area 8"
