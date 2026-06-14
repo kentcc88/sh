@@ -8083,7 +8083,7 @@ docker_ssh_migration() {
 				local VOL_ARGS=""
 				for path in $VOL_PATHS; do VOL_ARGS+="-v $path:$path "; done
 
-				# mirror
+				# Mirror
 				local IMAGE
 				IMAGE=$(jq -r '.[0].Config.Image' "$inspect_file")
 
@@ -10051,7 +10051,7 @@ moltbot_menu() {
 		echo "--------------------"
 		echo "4. View status log"
 		echo "5. Change model"
-		echo "6. API Management"
+		echo "6. API management"
 		echo "7. Robot connection and docking"
 		echo "8. Plug-in management (installation/removal)"
 		echo "9. Skill management (installation/removal)"
@@ -17617,7 +17617,7 @@ while true; do
 
 		}
 
-		local docker_describe="It is a lightweight, high-performance music streaming server"
+		local docker_describe="Is a lightweight, high-performance music streaming server"
 		local docker_url="Official website introduction: https://www.navidrome.org/"
 		local docker_use=""
 		local docker_passwd=""
@@ -19358,7 +19358,7 @@ linux_work() {
 	  echo -e "${gl_kjlan}2.   ${gl_bai}Work Area 2"
 	  echo -e "${gl_kjlan}3.   ${gl_bai}Work Area 3"
 	  echo -e "${gl_kjlan}4.   ${gl_bai}Work Area 4"
-	  echo -e "${gl_kjlan}5.   ${gl_bai}Work Area 5"
+	  echo -e "${gl_kjlan}5.   ${gl_bai}Workspace No. 5"
 	  echo -e "${gl_kjlan}6.   ${gl_bai}Work Area 6"
 	  echo -e "${gl_kjlan}7.   ${gl_bai}Work Area 7"
 	  echo -e "${gl_kjlan}8.   ${gl_bai}Work Area 8"
@@ -20101,7 +20101,7 @@ linux_Settings() {
 			echo "python version management"
 			echo "Video introduction: https://www.bilibili.com/video/BV1Pm42157cK?t=0.1"
 			echo "---------------------------------------"
-			echo "This function can seamlessly install any version officially supported by Python!"
+			echo "This function can seamlessly install any version officially supported by python!"
 			local VERSION=$(python3 -V 2>&1 | awk '{print $2}')
 			echo -e "Current python version number:${gl_huang}$VERSION${gl_bai}"
 			echo "------------"
