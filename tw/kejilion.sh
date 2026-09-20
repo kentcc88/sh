@@ -2366,7 +2366,7 @@ web_optimization() {
 			  read -e -p "请输入你的选择: " sub_choice
 			  case $sub_choice in
 				  1)
-				  send_stats "站點標準模式"
+				  send_stats "站点标准模式"
 
 				  local cpu_cores=$(nproc)
 				  local connections=$((1024 * ${cpu_cores}))
@@ -2374,7 +2374,7 @@ web_optimization() {
 				  sed -i "s/worker_connections.*/worker_connections ${connections};/" /home/web/nginx.conf
 
 
-				  # php調優
+				  # php调优
 				  wget -O /home/optimized_php.ini ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/optimized_php.ini
 				  docker cp /home/optimized_php.ini php:/usr/local/etc/php/conf.d/optimized_php.ini
 				  docker cp /home/optimized_php.ini php74:/usr/local/etc/php/conf.d/optimized_php.ini
@@ -2392,7 +2392,7 @@ web_optimization() {
 				  fix_phpfpm_conf php
 				  fix_phpfpm_conf php74
 
-				  # mysql調優
+				  # mysql调优
 				  wget -O /home/custom_mysql_config.cnf ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/custom_mysql_config-1.cnf
 				  docker cp /home/custom_mysql_config.cnf mysql:/etc/mysql/conf.d/
 				  rm -rf /home/custom_mysql_config.cnf
@@ -2403,13 +2403,13 @@ web_optimization() {
 				  optimize_balanced
 
 
-				  echo "LDNMP環境已設定成 標準模式"
+				  echo "LDNMP环境已设置成 标准模式"
 
 					  ;;
 				  2)
 				  send_stats "站点高性能模式"
 
-				  # nginx調優
+				  # nginx调优
 				  local cpu_cores=$(nproc)
 				  local connections=$((2048 * ${cpu_cores}))
 				  sed -i "s/worker_processes.*/worker_processes ${cpu_cores};/" /home/web/nginx.conf
@@ -2421,7 +2421,7 @@ web_optimization() {
 				  docker cp /home/optimized_php.ini php74:/usr/local/etc/php/conf.d/optimized_php.ini
 				  rm -rf /home/optimized_php.ini
 
-				  # php調優
+				  # php调优
 				  wget -O /home/www.conf ${gh_proxy}raw.githubusercontent.com/kejilion/sh/main/www.conf
 				  docker cp /home/www.conf php:/usr/local/etc/php-fpm.d/www.conf
 				  docker cp /home/www.conf php74:/usr/local/etc/php-fpm.d/www.conf
@@ -2442,7 +2442,7 @@ web_optimization() {
 
 				  optimize_web_server
 
-				  echo "LDNMP環境已設定成 高效能模式"
+				  echo "LDNMP环境已设置成 高性能模式"
 
 					  ;;
 				  3)
@@ -2491,7 +2491,7 @@ web_optimization() {
 
 check_docker_app() {
 	if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q "$docker_name" ; then
-		check_docker="${gl_lv}已安裝${gl_bai}"
+		check_docker="${gl_lv}已安装${gl_bai}"
 	else
 		check_docker="${gl_hui}未安装${gl_bai}"
 	fi
@@ -2504,7 +2504,7 @@ check_docker_app() {
 # if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q "$docker_name"; then
 # check_docker="${gl_lv}已安装${gl_bai}"
 # else
-# check_docker="${gl_hui}未安裝${gl_bai}"
+# check_docker="${gl_hui}未安装${gl_bai}"
 # fi
 
 # }
@@ -2512,7 +2512,7 @@ check_docker_app() {
 
 check_docker_app_ip() {
 echo "------------------------"
-echo "訪問地址:"
+echo "访问地址:"
 ip_address
 
 
@@ -2544,11 +2544,11 @@ check_docker_image_update() {
 	local container_name=$1
 	update_status=""
 
-	# 1. 區域檢查
+	# 1. 区域检查
 	local country=$(curl -s --max-time 2 ipinfo.io/country)
 	[[ "$country" == "CN" ]] && return
 
-	# 2. 取得本地鏡像訊息
+	# 2. 获取本地镜像信息
 	local container_info=$(docker inspect --format='{{.Created}},{{.Config.Image}}' "$container_name" 2>/dev/null)
 	[[ -z "$container_info" ]] && return
 
@@ -2556,22 +2556,22 @@ check_docker_image_update() {
 	local full_image_name=$(echo "$container_info" | cut -d',' -f2)
 	local container_created_ts=$(date -d "$container_created" +%s 2>/dev/null)
 
-	# 3. 智慧路由判斷
+	# 3. 智能路由判断
 	if [[ "$full_image_name" == ghcr.io* ]]; then
-		# --- 場景 A: 鏡像在 GitHub (ghcr.io) ---
-		# 提取倉庫路徑，例如 ghcr.io/onexru/oneimg -> onexru/oneimg
+		# --- 场景 A: 镜像在 GitHub (ghcr.io) ---
+		# 提取仓库路径，例如 ghcr.io/onexru/oneimg -> onexru/oneimg
 		local repo_path=$(echo "$full_image_name" | sed 's/ghcr.io\///' | cut -d':' -f1)
 		# 注意：ghcr.io 的 API 比较复杂，通常最快的方法是查 GitHub Repo 的 Release
 		local api_url="https://api.github.com/repos/$repo_path/releases/latest"
 		local remote_date=$(curl -s "$api_url" | jq -r '.published_at' 2>/dev/null)
 
 	elif [[ "$full_image_name" == *"oneimg"* ]]; then
-		# --- 場景 B: 特殊指定 (即便在 Docker Hub，也想透過 GitHub Release 判斷) ---
+		# --- 场景 B: 特殊指定 (即便在 Docker Hub，也想通过 GitHub Release 判断) ---
 		local api_url="https://api.github.com/repos/onexru/oneimg/releases/latest"
 		local remote_date=$(curl -s "$api_url" | jq -r '.published_at' 2>/dev/null)
 
 	else
-		# --- 場景 C: 標準 Docker Hub ---
+		# --- 场景 C: 标准 Docker Hub ---
 		local image_repo=${full_image_name%%:*}
 		local image_tag=${full_image_name##*:}
 		[[ "$image_repo" == "$image_tag" ]] && image_tag="latest"
@@ -2581,11 +2581,11 @@ check_docker_image_update() {
 		local remote_date=$(curl -s "$api_url" | jq -r '.last_updated' 2>/dev/null)
 	fi
 
-	# 4. 時間戳對比
+	# 4. 时间戳对比
 	if [[ -n "$remote_date" && "$remote_date" != "null" ]]; then
 		local remote_ts=$(date -d "$remote_date" +%s 2>/dev/null)
 		if [[ $container_created_ts -lt $remote_ts ]]; then
-			update_status="${gl_huang}發現新版本!${gl_bai}"
+			update_status="${gl_huang}发现新版本!${gl_bai}"
 		fi
 	fi
 }
@@ -2600,7 +2600,7 @@ block_container_port() {
 	local container_name_or_id=$1
 	local allowed_ip=$2
 
-	# 取得容器的 IP 位址
+	# 获取容器的 IP 地址
 	local container_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name_or_id")
 
 	if [ -z "$container_ip" ]; then
@@ -2610,12 +2610,12 @@ block_container_port() {
 	install iptables
 
 
-	# 檢查並封鎖其他所有 IP
+	# 检查并封禁其他所有 IP
 	if ! iptables -C DOCKER-USER -p tcp -d "$container_ip" -j DROP &>/dev/null; then
 		iptables -I DOCKER-USER -p tcp -d "$container_ip" -j DROP
 	fi
 
-	# 檢查並放行指定 IP
+	# 检查并放行指定 IP
 	if ! iptables -C DOCKER-USER -p tcp -s "$allowed_ip" -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -I DOCKER-USER -p tcp -s "$allowed_ip" -d "$container_ip" -j ACCEPT
 	fi
@@ -2632,7 +2632,7 @@ block_container_port() {
 		iptables -I DOCKER-USER -p udp -d "$container_ip" -j DROP
 	fi
 
-	# 檢查並放行指定 IP
+	# 检查并放行指定 IP
 	if ! iptables -C DOCKER-USER -p udp -s "$allowed_ip" -d "$container_ip" -j ACCEPT &>/dev/null; then
 		iptables -I DOCKER-USER -p udp -s "$allowed_ip" -d "$container_ip" -j ACCEPT
 	fi
@@ -4561,7 +4561,7 @@ yt_menu_pro() {
 				chmod a+rx /usr/local/bin/yt-dlp
 
 				add_app_id
-				echo "安裝完成。按任意鍵繼續..."
+				echo "安装完成。按任意键继续..."
 				read ;;
 			2)
 				send_stats "正在更新 yt-dlp..."
@@ -4572,16 +4572,16 @@ yt_menu_pro() {
 				echo "更新完成。按任意键继续..."
 				read ;;
 			3)
-				send_stats "正在卸載 yt-dlp..."
-				echo "正在卸載 yt-dlp..."
+				send_stats "正在卸载 yt-dlp..."
+				echo "正在卸载 yt-dlp..."
 				rm -f /usr/local/bin/yt-dlp
 
 				sed -i "/\b${app_id}\b/d" /home/docker/appno.txt
-				echo "卸載完成。按任意鍵繼續..."
+				echo "卸载完成。按任意键继续..."
 				read ;;
 			5)
 				send_stats "单个视频下载"
-				read -e -p "請輸入影片連結:" url
+				read -e -p "请输入视频链接: " url
 				yt-dlp -P "$VIDEO_DIR" -f "bv*+ba/b" --merge-output-format mp4 \
 					--write-subs --sub-langs all \
 					--write-thumbnail --embed-thumbnail \
@@ -4590,13 +4590,13 @@ yt_menu_pro() {
 					--no-overwrites --no-post-overwrites "$url"
 				read -e -p "下载完成，按任意键继续..." ;;
 			6)
-				send_stats "大量影片下載"
+				send_stats "批量视频下载"
 				install nano
 				if [ ! -f "$URL_FILE" ]; then
 				  echo -e "# 输入多个视频链接地址\n# https://www.bilibili.com/bangumi/play/ep733316?spm_id_from=333.337.0.0&from_spmid=666.25.episode.0" > "$URL_FILE"
 				fi
 				nano $URL_FILE
-				echo "現在開始批量下載..."
+				echo "现在开始批量下载..."
 				yt-dlp -P "$VIDEO_DIR" -f "bv*+ba/b" --merge-output-format mp4 \
 					--write-subs --sub-langs all \
 					--write-thumbnail --embed-thumbnail \
@@ -4604,19 +4604,19 @@ yt_menu_pro() {
 					-a "$URL_FILE" \
 					-o "$VIDEO_DIR/%(title)s/%(title)s.%(ext)s" \
 					--no-overwrites --no-post-overwrites
-				read -e -p "批次下載完成，按任何鍵繼續..." ;;
+				read -e -p "批量下载完成，按任意键继续..." ;;
 			7)
-				send_stats "自訂影片下載"
-				read -e -p "請輸入完整 yt-dlp 參數（不含 yt-dlp）:" custom
+				send_stats "自定义视频下载"
+				read -e -p "请输入完整 yt-dlp 参数（不含 yt-dlp）: " custom
 				yt-dlp -P "$VIDEO_DIR" $custom \
 					--write-subs --sub-langs all \
 					--write-thumbnail --embed-thumbnail \
 					--write-info-json \
 					-o "$VIDEO_DIR/%(title)s/%(title)s.%(ext)s" \
 					--no-overwrites --no-post-overwrites
-				read -e -p "執行完成，按任意鍵繼續..." ;;
+				read -e -p "执行完成，按任意键继续..." ;;
 			8)
-				send_stats "MP3下載"
+				send_stats "MP3下载"
 				read -e -p "请输入视频链接: " url
 				yt-dlp -P "$VIDEO_DIR" -x --audio-format mp3 \
 					--write-subs --sub-langs all \
@@ -4624,11 +4624,11 @@ yt_menu_pro() {
 					--write-info-json \
 					-o "$VIDEO_DIR/%(title)s/%(title)s.%(ext)s" \
 					--no-overwrites --no-post-overwrites "$url"
-				read -e -p "音訊下載完成，按任意鍵繼續..." ;;
+				read -e -p "音频下载完成，按任意键继续..." ;;
 
 			9)
 				send_stats "删除视频"
-				read -e -p "請輸入刪除影片名稱:" rmdir
+				read -e -p "请输入删除视频名称: " rmdir
 				rm -rf "$VIDEO_DIR/$rmdir"
 				;;
 			*)
@@ -4692,7 +4692,7 @@ linux_update() {
 	elif command -v opkg &>/dev/null; then
 		opkg update
 	else
-		echo "未知的套件管理器!"
+		echo "未知的包管理器!"
 		return
 	fi
 }
@@ -4729,13 +4729,13 @@ linux_clean() {
 		journalctl --vacuum-size=500M
 
 	elif command -v apk &>/dev/null; then
-		echo "清理包管理器快取..."
+		echo "清理包管理器缓存..."
 		apk cache clean
-		echo "刪除系統日誌..."
+		echo "删除系统日志..."
 		rm -rf /var/log/*
-		echo "刪除APK快取..."
+		echo "删除APK缓存..."
 		rm -rf /var/cache/apk/*
-		echo "刪除臨時檔案..."
+		echo "删除临时文件..."
 		rm -rf /tmp/*
 
 	elif command -v pacman &>/dev/null; then
@@ -4753,23 +4753,23 @@ linux_clean() {
 		journalctl --vacuum-size=500M
 
 	elif command -v opkg &>/dev/null; then
-		echo "刪除系統日誌..."
+		echo "删除系统日志..."
 		rm -rf /var/log/*
-		echo "刪除臨時檔案..."
+		echo "删除临时文件..."
 		rm -rf /tmp/*
 
 	elif command -v pkg &>/dev/null; then
-		echo "清理未使用的依賴..."
+		echo "清理未使用的依赖..."
 		pkg autoremove -y
-		echo "清理包管理器快取..."
+		echo "清理包管理器缓存..."
 		pkg clean -y
-		echo "刪除系統日誌..."
+		echo "删除系统日志..."
 		rm -rf /var/log/*
-		echo "刪除臨時檔案..."
+		echo "删除临时文件..."
 		rm -rf /tmp/*
 
 	else
-		echo "未知的套件管理器!"
+		echo "未知的包管理器!"
 		return
 	fi
 	return
@@ -4779,13 +4779,13 @@ linux_clean() {
 
 bbr_on() {
 
-# 統一寫入到 sysctl.d 以防與核心調優模組打架
+# 统一写入到 sysctl.d 以防与内核调优模块打架
 local CONF="/etc/sysctl.d/99-kejilion-bbr.conf"
 mkdir -p /etc/sysctl.d
 echo "net.core.default_qdisc=fq" > "$CONF"
 echo "net.ipv4.tcp_congestion_control=bbr" >> "$CONF"
 
-# 清理可能導致衝突的舊版 sysctl.conf 殘留
+# 清理可能导致冲突的旧版 sysctl.conf 残留
 sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf 2>/dev/null
 sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf 2>/dev/null
 
@@ -4823,24 +4823,24 @@ chattr +i /etc/resolv.conf
 
 set_dns_ui() {
 root_use
-send_stats "優化DNS"
+send_stats "优化DNS"
 while true; do
 	clear
-	echo "優化DNS位址"
+	echo "优化DNS地址"
 	echo "------------------------"
-	echo "目前DNS地址"
+	echo "当前DNS地址"
 	cat /etc/resolv.conf
 	echo "------------------------"
 	echo ""
-	echo "1. 國外DNS優化:"
+	echo "1. 国外DNS优化: "
 	echo " v4: 1.1.1.1 8.8.8.8"
 	echo " v6: 2606:4700:4700::1111 2001:4860:4860::8888"
-	echo "2. 國內DNS優化:"
+	echo "2. 国内DNS优化: "
 	echo " v4: 223.5.5.5 183.60.83.19"
 	echo " v6: 2400:3200::1 2400:da00::6666"
-	echo "3. 手動編輯DNS配置"
+	echo "3. 手动编辑DNS配置"
 	echo "------------------------"
-	echo "0. 返回上一級選單"
+	echo "0. 返回上一级选单"
 	echo "------------------------"
 	read -e -p "请输入你的选择: " Limiting
 	case "$Limiting" in
@@ -4850,7 +4850,7 @@ while true; do
 		local dns1_ipv6="2606:4700:4700::1111"
 		local dns2_ipv6="2001:4860:4860::8888"
 		set_dns
-		send_stats "國外DNS優化"
+		send_stats "国外DNS优化"
 		;;
 	  2)
 		local dns1_ipv4="223.5.5.5"
@@ -4858,7 +4858,7 @@ while true; do
 		local dns1_ipv6="2400:3200::1"
 		local dns2_ipv6="2400:da00::6666"
 		set_dns
-		send_stats "國內DNS優化"
+		send_stats "国内DNS优化"
 		;;
 	  3)
 		install nano
@@ -4935,7 +4935,7 @@ sshkey_on() {
 		   -e 's/^\s*#\?\s*ChallengeResponseAuthentication .*/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config
 	rm -rf /etc/ssh/sshd_config.d/* /etc/ssh/ssh_config.d/*
 	restart_ssh
-	echo -e "${gl_lv}使用者金鑰登入模式已開啟，已關閉密碼登入模式，重連將會生效${gl_bai}"
+	echo -e "${gl_lv}用户密钥登录模式已开启，已关闭密码登录模式，重连将会生效${gl_bai}"
 
 }
 
@@ -4953,7 +4953,7 @@ add_sshkey() {
 	chmod 600 "${HOME}/.ssh/authorized_keys"
 
 	ip_address
-	echo -e "私鑰資訊已生成，務必複製保存，可保存成${gl_huang}${ipv4_address}_ssh.key${gl_bai} 文件，用于以后的SSH登录"
+	echo -e "私钥信息已生成，务必复制保存，可保存成 ${gl_huang}${ipv4_address}_ssh.key${gl_bai} 文件，用于以后的SSH登录"
 
 	echo "--------------------------------"
 	cat "${HOME}/.ssh/sshkey"
@@ -4974,21 +4974,21 @@ import_sshkey() {
 	local auth_keys="${ssh_dir}/authorized_keys"
 
 	if [[ -z "$public_key" ]]; then
-		read -e -p "請輸入您的SSH公鑰內容（通常以 'ssh-rsa' 或 'ssh-ed25519' 開頭）:" public_key
+		read -e -p "请输入您的SSH公钥内容（通常以 'ssh-rsa' 或 'ssh-ed25519' 开头）: " public_key
 	fi
 
 	if [[ -z "$public_key" ]]; then
-		echo -e "${gl_hong}錯誤：未輸入公鑰內容。${gl_bai}"
+		echo -e "${gl_hong}错误：未输入公钥内容。${gl_bai}"
 		return 1
 	fi
 
 	if [[ ! "$public_key" =~ ^ssh-(rsa|ed25519|ecdsa) ]]; then
-		echo -e "${gl_hong}錯誤：看起來不像合法的 SSH 公鑰。${gl_bai}"
+		echo -e "${gl_hong}错误：看起来不像合法的 SSH 公钥。${gl_bai}"
 		return 1
 	fi
 
 	if grep -Fxq "$public_key" "$auth_keys" 2>/dev/null; then
-		echo "該公鑰已存在，無需重複添加"
+		echo "该公钥已存在，无需重复添加"
 		return 0
 	fi
 
@@ -5012,40 +5012,40 @@ fetch_remote_ssh_keys() {
 	local temp_file
 
 	if [[ -z "${keys_url}" ]]; then
-		read -e -p "請輸入您的遠端公鑰URL：" keys_url
+		read -e -p "请输入您的远端公钥URL： " keys_url
 	fi
 
-	echo "此腳本將從遠端 URL 拉取 SSH 公鑰，並添加到${authorized_keys}"
+	echo "此脚本将从远程 URL 拉取 SSH 公钥，并添加到 ${authorized_keys}"
 	echo ""
 	echo "远程公钥地址："
 	echo "  ${keys_url}"
 	echo ""
 
-	# 建立臨時文件
+	# 创建临时文件
 	temp_file=$(mktemp)
 
 	# 下载公钥
 	if command -v curl >/dev/null 2>&1; then
 		curl -fsSL --connect-timeout 10 "${keys_url}" -o "${temp_file}" || {
-			echo "錯誤：無法從 URL 下載公鑰（網路問題或位址無效）" >&2
+			echo "错误：无法从 URL 下载公钥（网络问题或地址无效）" >&2
 			rm -f "${temp_file}"
 			return 1
 		}
 	elif command -v wget >/dev/null 2>&1; then
 		wget -q --timeout=10 -O "${temp_file}" "${keys_url}" || {
-			echo "錯誤：無法從 URL 下載公鑰（網路問題或位址無效）" >&2
+			echo "错误：无法从 URL 下载公钥（网络问题或地址无效）" >&2
 			rm -f "${temp_file}"
 			return 1
 		}
 	else
-		echo "錯誤：系統中未找到 curl 或 wget，無法下載公鑰" >&2
+		echo "错误：系统中未找到 curl 或 wget，无法下载公钥" >&2
 		rm -f "${temp_file}"
 		return 1
 	fi
 
-	# 檢查內容是否有效
+	# 检查内容是否有效
 	if [[ ! -s "${temp_file}" ]]; then
-		echo "錯誤：下載到的檔案為空，URL 可能不包含任何公鑰" >&2
+		echo "错误：下载到的文件为空，URL 可能不包含任何公钥" >&2
 		rm -f "${temp_file}"
 		return 1
 	fi
@@ -5055,13 +5055,13 @@ fetch_remote_ssh_keys() {
 	touch "${authorized_keys}"
 	chmod 600 "${authorized_keys}"
 
-	# 備份原有 authorized_keys
+	# 备份原有 authorized_keys
 	if [[ -f "${authorized_keys}" ]]; then
 		cp "${authorized_keys}" "${authorized_keys}.bak.$(date +%Y%m%d-%H%M%S)"
-		echo "已備份原有 authorized_keys 文件"
+		echo "已备份原有 authorized_keys 文件"
 	fi
 
-	# 追加公鑰（避免重複）
+	# 追加公钥（避免重复）
 	local added=0
 	while IFS= read -r line; do
 		[[ -z "${line}" || "${line}" =~ ^# ]] && continue
@@ -5076,10 +5076,10 @@ fetch_remote_ssh_keys() {
 
 	echo ""
 	if (( added > 0 )); then
-		echo "成功添加${added}條新的公鑰到${authorized_keys}"
+		echo "成功添加 ${added} 条新的公钥到 ${authorized_keys}"
 		sshkey_on
 	else
-		echo "沒有新的公鑰需要添加（可能已全部存在）"
+		echo "没有新的公钥需要添加（可能已全部存在）"
 	fi
 
 	echo ""
@@ -5093,24 +5093,24 @@ fetch_github_ssh_keys() {
 	local username="$1"
 	local base_dir="${2:-$HOME}"
 
-	echo "操作前，請確保您已在 GitHub 帳戶中新增了 SSH 公鑰："
-	echo "1. 登入${gh_https_url}github.com/settings/keys"
-	echo "2. 點選 New SSH key 或 Add SSH key"
-	echo "3. Title 可隨意填寫（例如：Home Laptop 2026）"
-	echo "4. 將本機公鑰內容（通常是 ~/.ssh/id_ed25519.pub 或 id_rsa.pub 的全部內容）貼到 Key 字段"
-	echo "5. 點選 Add SSH key 完成新增"
+	echo "操作前，请确保您已在 GitHub 账户中添加了 SSH 公钥："
+	echo "  1. 登录 ${gh_https_url}github.com/settings/keys"
+	echo "  2. 点击 New SSH key 或 Add SSH key"
+	echo "  3. Title 可随意填写（例如：Home Laptop 2026）"
+	echo "  4. 将本地公钥内容（通常是 ~/.ssh/id_ed25519.pub 或 id_rsa.pub 的全部内容）粘贴到 Key 字段"
+	echo "  5. 点击 Add SSH key 完成添加"
 	echo ""
-	echo "新增完成後，GitHub 會公開提供您的所有公鑰，位址為："
-	echo "  ${gh_https_url}github.com/您的使用者名稱.keys"
+	echo "添加完成后，GitHub 会公开提供您的所有公钥，地址为："
+	echo "  ${gh_https_url}github.com/您的用户名.keys"
 	echo ""
 
 
 	if [[ -z "${username}" ]]; then
-		read -e -p "請輸入您的 GitHub 使用者名稱（username，不含 @）：" username
+		read -e -p "请输入您的 GitHub 用户名（username，不含 @）： " username
 	fi
 
 	if [[ -z "${username}" ]]; then
-		echo "錯誤：GitHub 使用者名稱不能為空" >&2
+		echo "错误：GitHub 用户名不能为空" >&2
 		return 1
 	fi
 
@@ -5123,59 +5123,59 @@ fetch_github_ssh_keys() {
 
 sshkey_panel() {
   root_use
-  send_stats "使用者密鑰登入"
+  send_stats "用户密钥登录"
   while true; do
 	  clear
 	  local REAL_STATUS=$(grep -i "^PubkeyAuthentication" /etc/ssh/sshd_config | tr '[:upper:]' '[:lower:]')
 	  if [[ "$REAL_STATUS" =~ "yes" ]]; then
-		  IS_KEY_ENABLED="${gl_lv}已啟用${gl_bai}"
+		  IS_KEY_ENABLED="${gl_lv}已启用${gl_bai}"
 	  else
-	  	  IS_KEY_ENABLED="${gl_hui}未啟用${gl_bai}"
+	  	  IS_KEY_ENABLED="${gl_hui}未启用${gl_bai}"
 	  fi
-  	  echo -e "使用者密鑰登入模式${IS_KEY_ENABLED}"
-  	  echo "進階玩法: https://blog.kejilion.pro/ssh-key"
+  	  echo -e "用户密钥登录模式 ${IS_KEY_ENABLED}"
+  	  echo "进阶玩法: https://blog.kejilion.pro/ssh-key"
   	  echo "------------------------------------------------"
-  	  echo "將會產生金鑰對，更安全的方式SSH登錄"
+  	  echo "将会生成密钥对，更安全的方式SSH登录"
 	  echo "------------------------"
 	  echo "1. 生成新密钥对                  2. 手动输入已有公钥"
-	  echo "3. 從GitHub導入已有公鑰 4. 從網址導入已有公鑰"
-	  echo "5. 編輯公鑰檔案 6. 查看本機金鑰"
+	  echo "3. 从GitHub导入已有公钥          4. 从URL导入已有公钥"
+	  echo "5. 编辑公钥文件                  6. 查看本机密钥"
 	  echo "------------------------"
-	  echo "0. 返回上一級選單"
+	  echo "0. 返回上一级选单"
 	  echo "------------------------"
-	  read -e -p "請輸入你的選擇:" host_dns
+	  read -e -p "请输入你的选择: " host_dns
 	  case $host_dns in
 		  1)
-	  		send_stats "產生新密鑰"
+	  		send_stats "生成新密钥"
 	  		add_sshkey
 			break_end
 			  ;;
 		  2)
-			send_stats "導入已有公鑰"
+			send_stats "导入已有公钥"
 			import_sshkey
 			break_end
 			  ;;
 		  3)
-			send_stats "導入GitHub遠端公鑰"
+			send_stats "导入GitHub远端公钥"
 			fetch_github_ssh_keys
 			break_end
 			  ;;
 		  4)
-			send_stats "導入URL遠端公鑰"
-			read -e -p "請輸入您的遠端公鑰URL：" keys_url
+			send_stats "导入URL远端公钥"
+			read -e -p "请输入您的远端公钥URL： " keys_url
 			fetch_remote_ssh_keys "${keys_url}"
 			break_end
 			  ;;
 
 		  5)
-			send_stats "編輯公鑰文件"
+			send_stats "编辑公钥文件"
 			install nano
 			nano ${HOME}/.ssh/authorized_keys
 			break_end
 			  ;;
 
 		  6)
-			send_stats "查看本機密鑰"
+			send_stats "查看本机密钥"
 			echo "------------------------"
 			echo "公钥信息"
 			cat ${HOME}/.ssh/authorized_keys
@@ -5202,7 +5202,7 @@ sshkey_panel() {
 add_sshpasswd() {
 
 	root_use
-	send_stats "設定密碼登入模式"
+	send_stats "设置密码登录模式"
 	echo "设置密码登录模式"
 
 	local target_user="$1"
@@ -5217,7 +5217,7 @@ add_sshpasswd() {
 
 	# 校验用户是否存在
 	if ! id "$target_user" >/dev/null 2>&1; then
-		echo "錯誤：用戶$target_user不存在"
+		echo "错误：用户 $target_user 不存在"
 		return 1
 	fi
 
@@ -5276,8 +5276,8 @@ dd_xitong() {
 		}
 
 		dd_xitong_1() {
-		  echo -e "重裝後初始使用者名稱:${gl_huang}root${gl_bai}初始密碼:${gl_huang}LeitboGi0ro${gl_bai}  初始端口: ${gl_huang}22${gl_bai}"
-		  echo -e "${gl_huang}重裝後請及時修改初始密碼，以防止暴力入侵。命令列輸入passwd修改密碼${gl_bai}"
+		  echo -e "重装后初始用户名: ${gl_huang}root${gl_bai}  初始密码: ${gl_huang}LeitboGi0ro${gl_bai}  初始端口: ${gl_huang}22${gl_bai}"
+		  echo -e "${gl_huang}重装后请及时修改初始密码，防止暴力入侵。命令行输入passwd修改密码${gl_bai}"
 		  echo -e "按任意键继续..."
 		  read -n 1 -s -r -p ""
 		  install wget
@@ -5286,7 +5286,7 @@ dd_xitong() {
 
 		dd_xitong_2() {
 		  echo -e "重装后初始用户名: ${gl_huang}Administrator${gl_bai}  初始密码: ${gl_huang}Teddysun.com${gl_bai}  初始端口: ${gl_huang}3389${gl_bai}"
-		  echo -e "按任意鍵繼續..."
+		  echo -e "按任意键继续..."
 		  read -n 1 -s -r -p ""
 		  install wget
 		  dd_xitong_MollyLau
@@ -5308,9 +5308,9 @@ dd_xitong() {
 
 		  while true; do
 			root_use
-			echo "重裝系統"
+			echo "重装系统"
 			echo "--------------------------------"
-			echo -e "${gl_hong}注意: ${gl_bai}重裝有風險失聯，不放心者慎用。重裝預計花費15分鐘，請提前備份資料。"
+			echo -e "${gl_hong}注意: ${gl_bai}重装有风险失联，不放心者慎用。重装预计花费15分钟，请提前备份数据。"
 			echo -e "${gl_hui}感谢bin456789大佬和leitbogioro大佬的脚本支持！${gl_bai} "
 			echo -e "${gl_hui}bin456789项目地址: ${gh_https_url}github.com/bin456789/reinstall${gl_bai}"
 			echo -e "${gl_hui}leitbogioro项目地址: ${gh_https_url}github.com/leitbogioro/Tools${gl_bai}"
@@ -5338,12 +5338,12 @@ dd_xitong() {
 			echo "------------------------"
 			echo "0. 返回上一级选单"
 			echo "------------------------"
-			read -e -p "請選擇要重裝的系統:" sys_choice
+			read -e -p "请选择要重装的系统: " sys_choice
 			case "$sys_choice" in
 
 
 			  1)
-				send_stats "重裝debian 13"
+				send_stats "重装debian 13"
 				dd_xitong_3
 				bash reinstall.sh debian 13
 				reboot
@@ -5372,14 +5372,14 @@ dd_xitong() {
 				exit
 				;;
 			  11)
-				send_stats "重裝ubuntu 24.04"
+				send_stats "重装ubuntu 24.04"
 				dd_xitong_1
 				bash InstallNET.sh -ubuntu 24.04
 				reboot
 				exit
 				;;
 			  12)
-				send_stats "重裝ubuntu 22.04"
+				send_stats "重装ubuntu 22.04"
 				dd_xitong_1
 				bash InstallNET.sh -ubuntu 22.04
 				reboot
@@ -5393,7 +5393,7 @@ dd_xitong() {
 				exit
 				;;
 			  14)
-				send_stats "重裝ubuntu 18.04"
+				send_stats "重装ubuntu 18.04"
 				dd_xitong_1
 				bash InstallNET.sh -ubuntu 18.04
 				reboot
@@ -5418,7 +5418,7 @@ dd_xitong() {
 				;;
 
 			  23)
-				send_stats "重裝alma10"
+				send_stats "重装alma10"
 				dd_xitong_3
 				bash reinstall.sh almalinux
 				reboot
@@ -5426,7 +5426,7 @@ dd_xitong() {
 				;;
 
 			  24)
-				send_stats "重裝alma9"
+				send_stats "重装alma9"
 				dd_xitong_3
 				bash reinstall.sh almalinux 9
 				reboot
@@ -5442,7 +5442,7 @@ dd_xitong() {
 				;;
 
 			  26)
-				send_stats "重裝oracle9"
+				send_stats "重装oracle9"
 				dd_xitong_3
 				bash reinstall.sh oracle 9
 				reboot
@@ -5458,7 +5458,7 @@ dd_xitong() {
 				;;
 
 			  28)
-				send_stats "重裝fedora41"
+				send_stats "重装fedora41"
 				dd_xitong_3
 				bash reinstall.sh fedora 41
 				reboot
@@ -5482,7 +5482,7 @@ dd_xitong() {
 				;;
 
 			  31)
-				send_stats "重裝alpine"
+				send_stats "重装alpine"
 				dd_xitong_1
 				bash InstallNET.sh -alpine
 				reboot
@@ -5506,7 +5506,7 @@ dd_xitong() {
 				;;
 
 			  34)
-				send_stats "重裝openeuler"
+				send_stats "重装openeuler"
 				dd_xitong_3
 				bash reinstall.sh openeuler
 				reboot
@@ -8420,7 +8420,7 @@ linux_docker() {
 						  docker network create $dockernetwork
 						  ;;
 					  2)
-						  send_stats "加入網路"
+						  send_stats "加入网络"
 						  read -e -p "加入网络名: " dockernetwork
 						  read -e -p "那些容器加入该网络（多个容器名请用空格分隔）: " dockernames
 
@@ -8429,9 +8429,9 @@ linux_docker() {
 						  done
 						  ;;
 					  3)
-						  send_stats "加入網路"
+						  send_stats "加入网络"
 						  read -e -p "退出网络名: " dockernetwork
-						  read -e -p "那些容器退出該網路（多個容器名稱請以空格分隔）:" dockernames
+						  read -e -p "那些容器退出该网络（多个容器名请用空格分隔）: " dockernames
 
 						  for dockername in $dockernames; do
 							  docker network disconnect $dockernetwork $dockername
@@ -8471,13 +8471,13 @@ linux_docker() {
 
 				  case $sub_choice in
 					  1)
-						  send_stats "新磁碟區"
+						  send_stats "新建卷"
 						  read -e -p "设置新卷名: " dockerjuan
 						  docker volume create $dockerjuan
 
 						  ;;
 					  2)
-						  read -e -p "輸入刪除卷名（多個卷名請以空格分隔）:" dockerjuans
+						  read -e -p "输入删除卷名（多个卷名请用空格分隔）: " dockerjuans
 
 						  for dockerjuan in $dockerjuans; do
 							  docker volume rm $dockerjuan
@@ -8539,7 +8539,7 @@ linux_docker() {
 
 		  11)
 			  clear
-			  send_stats "Docker v6 開"
+			  send_stats "Docker v6 开"
 			  docker_ipv6_on
 			  ;;
 
@@ -8625,7 +8625,7 @@ linux_test() {
 	  echo -e "${gl_kjlan}32.  ${gl_bai}spiritysdx 融合怪测评 ${gl_huang}★${gl_bai}"
 	  echo -e "${gl_kjlan}33.  ${gl_bai}nodequality 融合怪测评 ${gl_huang}★${gl_bai}"
 	  echo -e "${gl_kjlan}------------------------"
-	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主選單"
+	  echo -e "${gl_kjlan}0.   ${gl_bai}返回主菜单"
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
 	  read -e -p "请输入你的选择: " sub_choice
 
@@ -10906,7 +10906,7 @@ sync-openclaw-provider-interactive() {
 	send_stats "OpenClaw API按Provider同步"
 
 	if [ ! -f "$config_file" ]; then
-		echo "❌ 未找到設定檔:$config_file"
+		echo "❌ 未找到配置文件: $config_file"
 		break_end
 		return 1
 	fi
@@ -13366,7 +13366,7 @@ for entry in data:
     first = False
     print("Agent: %s" % agent_id)
     backend = s.get("backend") or s.get("provider") or "-"
-    print("底層方案: %s" % backend)
+    print("  底层方案: %s" % backend)
     files = s.get("files", 0)
     chunks = s.get("chunks", 0)
     print("  已收录: %s 文件 / %s 块" % (files, chunks))
@@ -13375,9 +13375,9 @@ for entry in data:
     print("  待刷新: %s" % dirty_str)
     vec = s.get("vector", {})
     if isinstance(vec, dict) and vec.get("enabled"):
-        vec_str = "就緒" if vec.get("available") else "已启用(不可用)"
+        vec_str = "就绪" if vec.get("available") else "已启用(不可用)"
     else:
-        vec_str = "未啟用"
+        vec_str = "未启用"
     print("  向量库: %s" % vec_str)
     ws = s.get("workspaceDir") or "-"
     print("  工作区: %s" % ws)

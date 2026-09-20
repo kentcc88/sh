@@ -3890,7 +3890,7 @@ ldnmp_web_status() {
 			2)
 				send_stats "克隆站点域名"
 				read -e -p "请输入旧域名: " oddyuming
-				read -e -p "新しいドメイン名を入力してください:" yuming
+				read -e -p "请输入新域名: " yuming
 				install_certbot
 				install_ssltls
 				certs_status
@@ -3930,7 +3930,7 @@ ldnmp_web_status() {
 			4)
 				send_stats "创建关联站点"
 				echo -e "为现有的站点再关联一个新域名用于访问"
-				read -e -p "既存のドメイン名を入力してください:" oddyuming
+				read -e -p "请输入现有的域名: " oddyuming
 				read -e -p "请输入新域名: " yuming
 				install_certbot
 				install_ssltls
@@ -3950,7 +3950,7 @@ ldnmp_web_status() {
 				break_end
 				;;
 			6)
-				send_stats "エラーログを表示する"
+				send_stats "查看错误日志"
 				tail -n 200 /home/web/log/nginx/error.log
 				break_end
 				;;
@@ -4110,7 +4110,7 @@ EOF
 	ip_address
 	echo "------------------------"
 	echo "客户端部署时需要用的参数"
-	echo "サービスIP:$ipv4_address"
+	echo "服务IP: $ipv4_address"
 	echo "token: $token"
 	echo
 	echo "FRP面板信息"
@@ -6303,18 +6303,18 @@ Kernel_optimize() {
 	  echo -e "2. 均衡优化模式：       在性能与资源消耗之间取得平衡，适合日常使用。"
 	  echo -e "3. 网站优化模式：       针对网站服务器优化，超高并发连接队列。"
 	  echo -e "4. 直播优化模式：       针对直播推流优化，UDP 缓冲区加大，减少延迟。"
-	  echo -e "5. ゲームサーバー最適化モード：低遅延を優先してゲームサーバーに最適化します。"
-	  echo -e "6. デフォルト設定の復元: システム設定をデフォルト構成に復元します。"
-	  echo -e "7. 自動チューニング: テストデータに基づいてカーネルパラメータを自動的にチューニングします。${gl_huang}★${gl_bai}"
+	  echo -e "5. 游戏服优化模式：     针对游戏服务器优化，低延迟优先。"
+	  echo -e "6. 还原默认设置：       将系统设置还原为默认配置。"
+	  echo -e "7. 自动调优：           根据测试数据自动调优内核参数。${gl_huang}★${gl_bai}"
 	  echo "--------------------"
 	  echo "0. 返回上一级选单"
 	  echo "--------------------"
-	  read -e -p "選択肢を入力してください:" sub_choice
+	  read -e -p "请输入你的选择: " sub_choice
 	  case $sub_choice in
 		  1)
 			  cd ~
 			  clear
-			  local tiaoyou_moshi="高性能最適化モード"
+			  local tiaoyou_moshi="高性能优化模式"
 			  optimize_high_performance
 			  send_stats "高性能模式优化"
 			  ;;
@@ -6328,7 +6328,7 @@ Kernel_optimize() {
 			  cd ~
 			  clear
 			  optimize_web_server
-			  send_stats "ウェブサイト最適化モード"
+			  send_stats "网站优化模式"
 			  ;;
 		  4)
 			  cd ~
@@ -6339,8 +6339,8 @@ Kernel_optimize() {
 		  5)
 			  cd ~
 			  clear
-			  _kernel_optimize_core "ゲームサーバー最適化モード" "game"
-			  send_stats "ゲームサーバーの最適化"
+			  _kernel_optimize_core "游戏服优化模式" "game"
+			  send_stats "游戏服优化"
 			  ;;
 		  6)
 			  cd ~
@@ -6435,7 +6435,7 @@ while true; do
 		  ;;
 	  3)
 		  update_locale "zh_TW.UTF-8" "zh_TW.UTF-8"
-		  send_stats "繁体字中国語に切り替える"
+		  send_stats "切换到繁体中文"
 		  ;;
 	  *)
 		  break
@@ -6468,7 +6468,7 @@ break_end
 
 shell_bianse() {
   root_use
-  send_stats "コマンドライン美化ツール"
+  send_stats "命令行美化工具"
   while true; do
 	clear
 	echo "命令行美化工具"
@@ -7480,7 +7480,7 @@ rsync_manager() {
 		echo "---------------------------------"
 		echo "0. 返回上一级选单"
 		echo "---------------------------------"
-		read -e -p "選択肢を入力してください:" choice
+		read -e -p "请输入你的选择: " choice
 		case $choice in
 			1) add_task ;;
 			2) delete_task ;;
@@ -7574,10 +7574,10 @@ linux_info() {
 	echo -e "${gl_kjlan}-------------"
 	echo -e "${gl_kjlan}CPU占用:        ${gl_bai}$cpu_usage_percent%"
 	echo -e "${gl_kjlan}系统负载:       ${gl_bai}$load"
-	echo -e "${gl_kjlan}TCP|UDP 接続の数:${gl_bai}$tcp_count|$udp_count"
-	echo -e "${gl_kjlan}物理メモリ:${gl_bai}$mem_info"
+	echo -e "${gl_kjlan}TCP|UDP连接数:  ${gl_bai}$tcp_count|$udp_count"
+	echo -e "${gl_kjlan}物理内存:       ${gl_bai}$mem_info"
 	echo -e "${gl_kjlan}虚拟内存:       ${gl_bai}$swap_info"
-	echo -e "${gl_kjlan}ハードドライブの使用状況:${gl_bai}$disk_info"
+	echo -e "${gl_kjlan}硬盘占用:       ${gl_bai}$disk_info"
 	echo -e "${gl_kjlan}-------------"
 	echo -e "${gl_kjlan}总接收:         ${gl_bai}$rx"
 	echo -e "${gl_kjlan}总发送:         ${gl_bai}$tx"
@@ -7594,7 +7594,7 @@ linux_info() {
 	fi
 	echo -e "${gl_kjlan}DNS地址:        ${gl_bai}$dns_addresses"
 	echo -e "${gl_kjlan}地理位置:       ${gl_bai}$country $city"
-	echo -e "${gl_kjlan}システム時間:${gl_bai}$timezone $current_time"
+	echo -e "${gl_kjlan}系统时间:       ${gl_bai}$timezone $current_time"
 	echo -e "${gl_kjlan}-------------"
 	echo -e "${gl_kjlan}运行时长:       ${gl_bai}$runtime"
 	echo
@@ -7610,7 +7610,7 @@ linux_tools() {
   while true; do
 	  clear
 	  # send_stats "基础工具"
-	  echo -e "基本的なツール"
+	  echo -e "基础工具"
 
 	  tools=(
 		curl wget sudo socat htop iftop unzip tar tmux ffmpeg
@@ -7635,7 +7635,7 @@ linux_tools() {
 	  elif command -v pkg >/dev/null 2>&1; then
 		PM="pkg"
 	  else
-		echo "❌ 認識されないパッケージマネージャー"
+		echo "❌ 未识别的包管理器"
 		exit 1
 	  fi
 
@@ -7643,7 +7643,7 @@ linux_tools() {
 	  echo -e "${gl_kjlan}------------------------${gl_bai}"
 
 	  for ((i=0; i<${#tools[@]}; i+=2)); do
-		# 左の列
+		# 左列
 		if command -v "${tools[i]}" >/dev/null 2>&1; then
 		  left=$(printf "✅ %-12s 已安装" "${tools[i]}")
 		else
@@ -14740,20 +14740,20 @@ except Exception as e:
 					break_end
 					;;
 				2)
-					echo "アプリの準備: 拡張モードの開発"
+					echo "准备应用：开发增强模式"
 					read -e -p "输入 yes 确认: " confirm
-					if [ "$confirm" = "yes" ]; then openclaw_permission_apply_developer; else echo "キャンセル"; fi
+					if [ "$confirm" = "yes" ]; then openclaw_permission_apply_developer; else echo "已取消"; fi
 					break_end
 					;;
 				3)
-					echo -e "${gl_hong}⚠️ フルオープンモードでは、実行承認が完全に崩壊し、高リスクコードが自動的にリリースされます。${gl_bai}"
+					echo -e "${gl_hong}⚠️ 完全开放模式会彻底瓦解 exec 审批并自动放行高危代码。${gl_bai}"
 					read -e -p "输入 FULL 确认继续: " confirm
 					if [ "$confirm" = "FULL" ]; then openclaw_permission_apply_full; else echo "已取消"; fi
 					break_end
 					;;
 				4)
-					echo "すべてのカスタム オーバーライドがクリアされ、OpenClaw が最初にインストールされたときの厳密にサンドボックス化された状態に戻ります。"
-					read -e -p "確認するには「yes」と入力します。" confirm
+					echo "将清除所有定制覆盖，恢复 OpenClaw 刚安装时的严格沙盒状态。"
+					read -e -p "输入 yes 确认: " confirm
 					if [ "$confirm" = "yes" ]; then openclaw_permission_restore_official_defaults; else echo "已取消"; fi
 					break_end
 					;;
@@ -14832,7 +14832,7 @@ except Exception:
 
 	openclaw_multiagent_require_openclaw() {
 		if ! openclaw_has_command openclaw; then
-			echo "❌ openclaw コマンドが検出されません。最初に OpenClaw をインストールまたは初期化してください。"
+			echo "❌ 未检测到 openclaw 命令，请先安装或初始化 OpenClaw。"
 			return 1
 		fi
 		return 0
@@ -14951,7 +14951,7 @@ PY
 		local config_file default_agent
 		config_file=$(openclaw_multiagent_config_file)
 		default_agent=$(openclaw_multiagent_default_agent)
-		echo "設定ファイル: ${config_file:-$(openclaw_permission_config_file)}"
+		echo "配置文件: ${config_file:-$(openclaw_permission_config_file)}"
 		echo "默认智能体: $default_agent"
 		python3 -c '
 import json,sys
@@ -14959,9 +14959,9 @@ agents=json.loads(sys.argv[1] or "[]")
 bindings=json.loads(sys.argv[2] or "[]")
 sess_obj=json.loads(sys.argv[3] or "{}")
 sessions=sess_obj.get("sessions",[]) if isinstance(sess_obj,dict) else []
-print("構成されたエージェントの数: %s" % len(agents))
-print("ルート バインディングの数: %s" % len(bindings))
-print("合計セッション数: %s" % len(sessions))
+print("已配置智能体数: %s" % len(agents))
+print("路由绑定数: %s" % len(bindings))
+print("会话总数: %s" % len(sessions))
 print("---------------------------------------")
 if not agents:
     print("当前未配置任何多智能体。")
@@ -14976,7 +14976,7 @@ else:
         bcount = item.get("bindings", 0)
         default_tag = " [默认]" if is_default else ""
         print("- 智能体ID: \033[1;36m%s\033[0m%s" % (aid, default_tag))
-        print("アイデンティティ名: %s %s" % (identity, emoji))
+        print("  身份名称: %s %s" % (identity, emoji))
         print("  模型: %s" % model)
         print("  工作目录: %s" % ws)
         print("  绑定数: %s" % bcount)
@@ -14986,13 +14986,13 @@ else:
 	openclaw_multiagent_list_agents() {
 		send_stats "OpenClaw多智能体-列出Agent"
 		python3 -c 'import json,sys; agents=json.loads(sys.argv[1] or "[]");
-if not agents: print("エージェントはまだ構成されていません。"); raise SystemExit(0)
+if not agents: print("暂无已配置 Agent。"); raise SystemExit(0)
 for idx,item in enumerate(agents,1):
  print("%s. %s" % (idx, item.get("id","?"))); print("   workspace : %s" % item.get("workspace","-")); ident=(item.get("identityName") or "-") + ((" " + item.get("identityEmoji")) if item.get("identityEmoji") else ""); print("   identity  : %s" % ident.strip()); print("   model     : %s" % (item.get("model") or "-")); print("   bindings  : %s" % item.get("bindings",0)); print("   default   : %s" % ("yes" if item.get("isDefault") else "no"))' "$(openclaw_multiagent_agents_json)"
 	}
 
 	openclaw_multiagent_add_agent() {
-		send_stats "OpenClaw マルチエージェント - 新しいエージェント"
+		send_stats "OpenClaw多智能体-新增Agent"
 		openclaw_multiagent_require_openclaw || return 1
 		local agent_id workspace confirm
 		read -e -p "请输入新的 Agent ID: " agent_id
@@ -15156,7 +15156,7 @@ print("✅ 多智能体健康检查完成")
 		openclaw_multiagent_require_openclaw || return 1
 		openclaw_multiagent_list_agents
 		read -e -p "输入要修改身份的智能体ID: " agent_id
-		[ -z "$agent_id" ] && { echo "ID を空にすることはできません"; return 1; }
+		[ -z "$agent_id" ] && { echo "ID 不能为空"; return 1; }
 		echo "修改选项（留空跳过）："
 		read -e -p "  新名称: " new_name
 		read -e -p "  新 Emoji: " new_emoji
@@ -15188,7 +15188,7 @@ print("✅ 多智能体健康检查完成")
 			echo "======================================="
 			openclaw_multiagent_render_status
 			echo "---------------------------------------"
-			echo "1. 新しいインテリジェント エージェントを追加する"
+			echo "1. 新增智能体"
 			echo "2. 删除智能体"
 			echo "3. 查看路由绑定"
 			echo "4. 新增路由绑定"
